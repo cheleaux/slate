@@ -1,6 +1,7 @@
 const { User } = require('../model.js')
 const UserValidation = require('../validation.js')
 const crypto = require('crypto')
+const { createJWTToken } = require('../../auth')
 
 async function registerNewUserController(req, res){
     try {
@@ -15,8 +16,15 @@ async function registerNewUserController(req, res){
         const passwordHash = crypto.hash('sha256', password)
         const newUser = new User({username, email, dob, password: passwordHash})
         await newUser.save()
+            .catch((err) => {throw err})
         // Send new user details to client (temp implementation, likely to change to necessary detail for login and such)
-        res.status(200).json({message: "New user has been successfully registered", userDetails: newUser.toJSON()})
+        res.status(200).json({
+            message: "New user successfully registered",
+            token: createJWTToken({
+                sessionData: newUser,
+            }),
+            success: true
+        })
     } catch(err) {
         console.error('Failed: Unable to regiester new user.\n', err)
         res.status(500).json({message: 'Failed to register new user', error: err.message})
