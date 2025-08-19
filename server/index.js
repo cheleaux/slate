@@ -2,7 +2,9 @@ const express = require('express')
 const cors = require('cors')
 const { UserOperationsRouter } = require('./src/users')
 const { AuthRouter } = require('./src/auth')
+require('dotenv').config()
 require('./mongodb.js')
+
 
 const PORT = 8000
 const app = express()

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-require('dotenv').config()
 
 connect().catch((err) => console.error(err))
 
