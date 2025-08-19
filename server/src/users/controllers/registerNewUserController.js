@@ -1,7 +1,8 @@
 const { User } = require('../model.js')
 const UserValidation = require('../validation.js')
 const crypto = require('crypto')
-const { createJWTToken } = require('../../auth')
+const { createJWTToken } = require('../../auth/tokens_jwt.js')
+
 
 async function registerNewUserController(req, res){
     try {

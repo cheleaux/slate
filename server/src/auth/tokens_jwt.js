@@ -18,12 +18,23 @@ function createJWTToken(details = undefined){
     // generate and sign token with secret and set expiry
     const token = jwt.sign({
         data: details.sessionData,
-    }, 'sosecret0hhhh', {
+    }, process.env.JWT_SIGNITURE_SECRET, {
         expiresIn: details.maxAge
     })
     
     return token
 }
 
+function verifyJWTToken(token){
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, process.env.JWT_SIGNITURE_SECRET, (err, decodedToken) =>{
+            if(!err && decodedToken) return resolve(decode);
+            else {
+                return reject(err)
+            }
+        })
+    })
+}
 
-module.exports = { createJWTToken }
+
+module.exports = { createJWTToken, verifyJWTToken }
