@@ -1,5 +1,5 @@
 const { User } = require("../model")
-const UserValidation = require("../validation")
+const { UserValidation } = require('../../utils/validation.js')
 
 
 async function updateUserDetailsController(req, res){

@@ -5,7 +5,7 @@ async function getUsersController(req, res){
     try {
         if(!userId || userId === 0){
             // TODO: consider verifying the request origin originates from host domain or authorized clients
-            return res.status(200).json(await User.find())
+            return res.status(200).json(await User.find())  //TODO: add filter to exclude 'password' from query result
         } else {
             const requestedUser = await User.findById(userId)
             return res.status(200).json(requestedUser)

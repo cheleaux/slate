@@ -1,5 +1,5 @@
 const { User } = require('../model.js')
-const UserValidation = require('../validation.js')
+const { UserValidation } = require('../../utils/validation.js')
 const crypto = require('crypto')
 const { createJWTToken } = require('../../auth/tokens_jwt.js')
 

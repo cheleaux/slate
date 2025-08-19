@@ -1,4 +1,4 @@
-const { UserValidation } = require('../../users')
+const { UserValidation } = require('../../utils/validation.js')
 const { createJWTToken } = require('../tokens_jwt.js')
 const authConfig = require('../../config.js').auth
 

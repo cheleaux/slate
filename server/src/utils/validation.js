@@ -1,4 +1,4 @@
-const { User, UserSchema } = require('./model.js')
+const { User, UserSchema } = require('../users/model.js')
 const crypto = require('crypto')
 
 class UserValidation {
@@ -51,4 +51,4 @@ class UserValidation {
     }
 }
 
-module.exports = UserValidation
+module.exports = { UserValidation }

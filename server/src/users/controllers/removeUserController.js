@@ -1,4 +1,4 @@
-const UserValidation = require('../validation.js')
+const { UserValidation } = require('../../utils/validation.js')
 
 async function removeUserController(req, res){
     try {
