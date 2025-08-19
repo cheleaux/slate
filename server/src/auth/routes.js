@@ -1,6 +1,5 @@
 const express = require('express')
 const { loginAuthController } = require('./controllers')
-const { createJWTToken } = require('./tokens_jwt.js')
 
 const router = express.Router()
 

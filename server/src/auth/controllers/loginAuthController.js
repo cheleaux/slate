@@ -1,5 +1,6 @@
 const { UserValidation } = require('../../users')
-const uuid = require('uuid')
+const { createJWTToken } = require('../tokens_jwt.js')
+const authConfig = require('../../config.js').auth
 
 async function loginController(req, res){
     try {
@@ -14,10 +15,16 @@ async function loginController(req, res){
             return res.status(404).json({message: "Unable to find the user"})
         }
         const user = exists[0]
-        if(UserValidation.iscorrectPassword(password, user)){
-             
-            
-            return res.status(200).json({message: `User has been successfully logged in. Welcome ${ user.username }!`})
+        // Validate given password and return the generated jwt token with successful response
+        if(UserValidation.iscorrectPassword(password, user)){            
+            return res.status(200).json({
+                message: `User successfully logged in`,
+                token: createJWTToken({
+                    sessionData: user,
+                    maxAge: authConfig.jwt.tokenExpiryTime
+                }),
+                success: true,
+            })
         } else {
             return res.status(401).json({message: "Login request denied. Incorrect credentials."})
         }
