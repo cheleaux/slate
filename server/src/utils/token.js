@@ -50,12 +50,14 @@ async function revokeJWTToken(token){
         try {
             const { _id, iat, exp } = verifyJWTToken(token)
             const revoked = new BlacklistedToken({ _id, iat, exp, for: "user" })
-            revoked.save()
+            revoked.save().then(revokedToken => resolve(revokedToken._id))
+                .catch((err) => { throw err })
         } catch(err){
-            // TODO: if the token is expired do not add to the blacklist 
+            // Dont add the token to blacklist if it's expire just nofity it's expired already
+            return reject(err) 
         }
     })
 }
 
 
-module.exports = { createJWTToken, verifyJWTToken }
+module.exports = { createJWTToken, verifyJWTToken, revokeJWTToken }
