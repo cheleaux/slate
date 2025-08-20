@@ -28,7 +28,7 @@ function createJWTToken(details = undefined){
 function verifyJWTToken(token){
     return new Promise((resolve, reject) => {
         jwt.verify(token, process.env.JWT_SIGNITURE_SECRET, (err, decodedToken) =>{
-            if(!err && decodedToken) return resolve(decode);
+            if(!err && decodedToken) return resolve(decodedToken);
             else {
                 return reject(err)
             }

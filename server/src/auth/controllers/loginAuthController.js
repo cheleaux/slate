@@ -1,5 +1,5 @@
 const { UserValidation } = require('../../utils/validation.js')
-const { createJWTToken } = require('../tokens_jwt.js')
+const { createJWTToken } = require('../../utils/token.js')
 const authConfig = require('../../config.js').auth
 
 async function loginController(req, res){
