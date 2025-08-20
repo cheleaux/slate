@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const authConfig = require('../config.js').auth
 
-
+// TODO: Figure out why the user password is present in the generated token
 function createJWTToken(details = undefined){
     if(typeof details !== 'object') details = {};
 
@@ -9,7 +9,7 @@ function createJWTToken(details = undefined){
         details.maxAge = authConfig.jwt.tokenExpiryTime
     }
     // Remove all non-essential data and functions from session data list 
-    const sessionSafeData = Object.entries(details.sessionData).reduce((sessionSafeData, kv) => {
+    const sessionSafeData = Object.entries(details.sessionData._doc).reduce((sessionSafeData, kv) => {
         if(kv[0] !== 'password' && typeof kv[1] !== 'function') sessionSafeData.push(kv);
         return sessionSafeData
     }, [])
@@ -21,16 +21,16 @@ function createJWTToken(details = undefined){
     }, process.env.JWT_SIGNITURE_SECRET, {
         expiresIn: details.maxAge
     })
-    
+
     return token
 }
 
-function verifyJWTToken(token){
+async function verifyJWTToken(token){
     return new Promise((resolve, reject) => {
-        jwt.verify(token, process.env.JWT_SIGNITURE_SECRET, (err, decodedToken) =>{
-            if(!err && decodedToken) return resolve(decodedToken);
+        jwt.verify(token, process.env.JWT_SIGNITURE_SECRET, (err, decodedToken) => {
+            if(!err && decodedToken) resolve(decodedToken);
             else {
-                return reject(err)
+                reject(err)
             }
         })
     })
