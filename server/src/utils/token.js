@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const uuid = require('uuid')
 const BlacklistedToken = require('../auth/tokenBlacklist.js')
+const { isRelativeTimeNotation } = require('../utils/helpers.js')
 const authConfig = require('../config.js').auth
 
 // TODO: Figure out why the user password is present in the generated token

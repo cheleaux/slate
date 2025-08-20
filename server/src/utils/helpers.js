@@ -7,4 +7,4 @@ function isRelativeTimeNotation(string){
     return timeNotationFormat.test(string)
 }
 
-module.export = { isRelativeTimeNotation }
+module.exports = { isRelativeTimeNotation }
