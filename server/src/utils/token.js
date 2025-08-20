@@ -1,12 +1,17 @@
 const jwt = require('jsonwebtoken')
 const uuid = require('uuid')
+const BlacklistedToken = require('../auth/tokenBlacklist.js')
 const authConfig = require('../config.js').auth
 
 // TODO: Figure out why the user password is present in the generated token
 function createJWTToken(details = undefined){
     if(typeof details !== 'object') details = {};
+    // Validate 'maxAge' value to ensure it's of an accepted format, either Duration Shorthand or Numerical (in seconds)
+    const isValidMaxAge = details.maxAge &&
+        (typeof details.maxAge === 'number' ||
+        (typeof details.maxAge !== 'number' && isRelativeTimeNotation(details.maxAge)))
 
-    if(!details.maxAge || typeof details.maxAge !== 'number'){
+    if(!isValidMaxAge){
         details.maxAge = authConfig.jwt.tokenExpiryTime
     }
     // Remove all non-essential data and functions from session data list.
@@ -36,6 +41,18 @@ async function verifyJWTToken(token){
                 reject(err)
             }
         })
+    })
+}
+
+async function revokeJWTToken(token){
+    return new Promise((resolve, reject) => {
+        try {
+            const { _id, iat, exp } = verifyJWTToken(token)
+            const revoked = new BlacklistedToken({ _id, iat, exp, for: "user" })
+            revoked.save()
+        } catch(err){
+            // TODO: if the token is expired do not add to the blacklist 
+        }
     })
 }
 
