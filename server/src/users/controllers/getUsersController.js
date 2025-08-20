@@ -7,8 +7,11 @@ async function getUsersController(req, res){
             // TODO: consider verifying the request origin originates from host domain or authorized clients
             return res.status(200).json(await User.find())  //TODO: add filter to exclude 'password' from query result
         } else {
-            const requestedUser = await User.findById(userId)
-            return res.status(200).json(requestedUser)
+            var user = await User.findById(userId)  //TODO: add filter to exclude 'password' from query result
+            if(!user){
+                return res.status(404).json({message: "Unable to find the user"})
+            }
+            return res.status(200).json({user})
         }
     } catch(err) {
         console.error('Failed: Unable to fetch requested user(s).\n', err)
