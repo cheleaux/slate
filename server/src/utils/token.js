@@ -8,7 +8,8 @@ function createJWTToken(details = undefined){
     if(!details.maxAge || typeof details.maxAge !== 'number'){
         details.maxAge = authConfig.jwt.tokenExpiryTime
     }
-    // Remove all non-essential data and functions from session data list 
+    // Remove all non-essential data and functions from session data list.
+    // Specifies '._doc' property from sessionData to iterate only user attributes defined in schema
     const sessionSafeData = Object.entries(details.sessionData._doc).reduce((sessionSafeData, kv) => {
         if(kv[0] !== 'password' && typeof kv[1] !== 'function') sessionSafeData.push(kv);
         return sessionSafeData
