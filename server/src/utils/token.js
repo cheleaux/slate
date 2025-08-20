@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const uuid = require('uuid')
 const authConfig = require('../config.js').auth
 
 // TODO: Figure out why the user password is present in the generated token
@@ -18,6 +19,7 @@ function createJWTToken(details = undefined){
     details.sessionData = Object.fromEntries(sessionSafeData)
     // generate and sign token with secret and set expiry
     const token = jwt.sign({
+        _id: uuid.v4(),
         data: details.sessionData,
     }, process.env.JWT_SIGNITURE_SECRET, {
         expiresIn: details.maxAge
