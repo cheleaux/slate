@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const uuid = require('uuid')
-const BlacklistedToken = require('../auth/tokenBlacklist.js')
+const { BlacklistedToken } = require('../auth/tokenBlacklist.js')
 const { isRelativeTimeNotation } = require('../utils/helpers.js')
 const authConfig = require('../config.js').auth
 
@@ -46,17 +46,15 @@ async function verifyJWTToken(token){
 }
 
 async function revokeJWTToken(token){
-    return new Promise((resolve, reject) => {
-        try {
-            const { _id, iat, exp } = verifyJWTToken(token)
-            const revoked = new BlacklistedToken({ _id, iat, exp, for: "user" })
-            revoked.save().then(revokedToken => resolve(revokedToken._id))
-                .catch((err) => { throw err })
-        } catch(err){
-            // Dont add the token to blacklist if it's expire just nofity it's expired already
-            return reject(err) 
-        }
-    })
+    try {
+        const decodedToken = await verifyJWTToken(token)
+        const { _id, data: { iat, exp } } = decodedToken
+        const revoked = new BlacklistedToken({ iat, exp, for: "user", tokenId: _id,})
+        await revoked.save()
+        return revoked._id
+    } catch(err){
+        throw err 
+    }
 }
 
 
