@@ -1,9 +1,15 @@
 const express = require('express')
-const { verifyAndDecodeToken_ } = require('./controllers.js')
+const { decodeAndVerifyToken_, decodeAndRevokeToken_ } = require('./controllers.js')
 
 
 const router = express.Router()
 
-router.get('/verify-jwt-token', verifyAndDecodeToken_)
+router.post('/verify-jwt-token', decodeAndVerifyToken_)
+
+router.post('/revoke-jwt-token', decodeAndRevokeToken_)
 
 module.exports = router
+
+// TODO: Add authentication middleware to all test routes
+//      - Can use JWT or another simple key/token base authenticaion
+//      - Must have a seperate dev-only secret key for token
