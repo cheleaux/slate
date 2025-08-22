@@ -7,15 +7,15 @@ const BlacklistedTokenSchema = mongoose.Schema({
     },
     for: {
         type: String,
-        require: true
+        required: true
     },
     iat: {
         type: Number,
-        require: true
+        required: true
     },
     exp: {
         type: Number,
-        require: true
+        required: true
     }
 })
 

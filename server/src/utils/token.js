@@ -48,7 +48,7 @@ async function verifyJWTToken(token){
 async function revokeJWTToken(token){
     try {
         const decodedToken = await verifyJWTToken(token)
-        const { _id, data: { iat, exp } } = decodedToken
+        const { _id, iat, exp } = decodedToken
         const revoked = new BlacklistedToken({ iat, exp, for: "user", tokenId: _id,})
         await revoked.save()
         return revoked._id
