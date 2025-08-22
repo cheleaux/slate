@@ -30,7 +30,7 @@ async function loginController(req, res){
         }
     } catch(err){
         console.error("Failed: A problem occurred while attempting login.", err)
-        res.status(500).json({message: "Failed to authenticate user. A problem occurred while attempting login.", error: err.message})
+        res.status(500).json({message: "Failed to authenticate user. A problem occurred while attempting login.", error: err.message, success: false})
     }
 }
 
