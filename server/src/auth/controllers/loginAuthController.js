@@ -2,6 +2,13 @@ const { UserValidation } = require('../../utils/validation.js')
 const { createJWTToken } = require('../../utils/token.js')
 const authConfig = require('../../config.js').auth
 
+
+// TODO: Prevent double login of users
+//      - Store the list of tokens a users has been allocated. Can exclude non essential data or entire token
+//      - Add device id (e.g. ) to all token data and ensure this is stored in user token list.
+//      - Consider building out sessions and store the user-agent, ip and token data in those.
+//        This involves changing the blacklisting func to user sessions instead of just token or using existing
+//        func to invalidate the sessions associate with said tokens
 async function loginController(req, res){
     try {
         const { userReference, password } = req.body.userCredentials
