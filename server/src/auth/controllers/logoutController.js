@@ -3,7 +3,7 @@ const { UserValidation } = require('../../utils/validation.js')
 
 async function logoutController(req, res){
     try {
-        const userId = req.body.userId
+        const userId = req.user.id
         let token = req.headers.authorization || req.body.token
         token = token.startsWith('Bearer') ? token.slice(6).trimStart() : token ;
         // Only logout if user exist to prevent erraneous token revocation

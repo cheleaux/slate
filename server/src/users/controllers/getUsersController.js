@@ -1,7 +1,7 @@
 const { User } = require('../model.js')
 
 async function getUsersController(req, res){
-    const userId = req.params.id
+    const userId = req.user.id
     try {
         if(!userId || userId === 0){
             // TODO: consider verifying the request origin originates from host domain or authorized clients

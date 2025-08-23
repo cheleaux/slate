@@ -5,7 +5,7 @@ const { UserValidation } = require('../../utils/validation.js')
 async function updateUserDetailsController(req, res){
     try {
         const updatedDetails = req.body.updatedDetails
-        const id = req.params.id
+        const id = req.user.id
         // Only proceed with the update operation if the given properties are valid against user schema
         if(UserValidation.hasProperties(Object.keys(updatedDetails))){
             // Check whether the user being updated exists

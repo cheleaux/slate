@@ -2,7 +2,7 @@ const { UserValidation } = require('../../utils/validation.js')
 
 async function removeUserController(req, res){
     try {
-        const { id } = req.params
+        const id = req.user.id
         // Check whether the requested user is in the system before operation
         const exists = await UserValidation.exists_byId(id)
         if(!exists){
