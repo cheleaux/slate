@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const ImageSchema = mongoose.Schema({
-    userId: {
+    ownerId: {
         type: mongoose.Types.ObjectId,
         required: true
     },
