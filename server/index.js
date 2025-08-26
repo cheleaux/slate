@@ -1,8 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const { UserOperationsRouter } = require('./src/users')
-const { AuthRouter } = require('./src/auth')
-const TestRouter = require('./src/test/routes.js')
+const { AuthRouter, UserOperationsRouter, TestAuthRouter } = require('./src/routes')
 require('dotenv').config()
 require('./mongodb.js')
 
@@ -18,7 +16,7 @@ app.use('/users', UserOperationsRouter)
 
 app.use('/auth', AuthRouter)
 
-app.use('/test', TestRouter)
+app.use('/test', TestAuthRouter)
 
 
 app.listen(PORT, () => console.log(`App is listening on port ${PORT}`))
