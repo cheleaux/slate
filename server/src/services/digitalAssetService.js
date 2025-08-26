@@ -27,7 +27,7 @@ class DigitalAssetService {
             }
             return await this.#assetStore.deleteImageDoc(imageId, userId)
         } catch(err) {
-            console.error("Failed to delete asset 'image'")
+            console.error("Failed to delete asset 'image'", err)
             throw err
         }
     }
