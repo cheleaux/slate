@@ -2,14 +2,14 @@ const { Image } = require('./models/image.js')
 
 
 class DigitalAssetStore {
-    static async saveImage(imageDetails){
+    static async saveImageDoc(imageDetails){
         const { ownerId, fileName, fileSize, fileKey } = imageDetails
         const image = new Image({ ownerId, fileName, fileSize, fileKey })
         return await image.save()
     }
 
 
-    static async updateImage(newImageDetails, id){
+    static async updateImageDoc(newImageDetails, id){
         const image = await Image.findOne(id)
         for(const key in newImageDetails){
             if(!Object.hasOwn(image, key)){
@@ -20,7 +20,7 @@ class DigitalAssetStore {
         return await image.save()
     }
 
-    static async deleteImage(id, userId){
+    static async deleteImageDoc(id, userId){
         const image = await Image.findOne(id)
         if(image.userId !== userId){
             throw new Error("requesting user id must match the owner id")

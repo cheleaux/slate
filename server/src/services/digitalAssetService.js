@@ -13,7 +13,7 @@ class DigitalAssetService {
             // Create the unique fileKey with uuid attached and persist image data
             const fileKey = `${uuid.v4()}-${imageDetails.fileName}`
             imageDetails.fileKey = fileKey
-            return await this.#assetStore.saveImage(imageDetails)
+            return await this.#assetStore.saveImageDoc(imageDetails)
         } catch(err) {
             console.error("Failed to create asset 'image'\n", err)
             throw err
@@ -25,7 +25,7 @@ class DigitalAssetService {
             if(!userId){
                 throw new Error("User Id is required to create image")
             }
-            return await this.#assetStore.deleteImage(imageId, userId)
+            return await this.#assetStore.deleteImageDoc(imageId, userId)
         } catch(err) {
             console.error("Failed to delete asset 'image'")
             throw err
