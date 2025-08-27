@@ -3,29 +3,54 @@ const { Image } = require('./models/image.js')
 
 class DigitalAssetStore {
     static async saveImageDoc(imageDetails){
-        const { ownerId, fileName, fileSize, fileKey } = imageDetails
-        const image = new Image({ ownerId, fileName, fileSize, fileKey })
-        return await image.save()
+        try {
+            const { ownerId, fileName, fileSize, fileKey } = imageDetails
+            const image = new Image({ ownerId, fileName, fileSize, fileKey })
+            return await image.save()
+        } catch(err) {
+            const msg = this.#resolveAssetOperationErrorMessage(err)
+            console.error(msg)
+            throw err
+        }
     }
 
-
     static async updateImageDoc(newImageDetails, id){
-        const image = await Image.findOne(id)
-        for(const key in newImageDetails){
-            if(!Object.hasOwn(image, key)){
-                throw new Error("Invalid Image property")
+        try {
+            const image = await Image.findOne({_id: id})
+            for(const key in newImageDetails){
+                if(!Object.hasOwn(image, key)){
+                    throw new Error("Invalid Image property")
+                }
+                image[key] = newImageDetails[key]
             }
-            image[key] = newImageDetails[key]
+            return await image.save()
+        } catch(err) {
+            const msg = this.#resolveAssetOperationErrorMessage(err)
+            console.error(msg)
+            throw err
         }
-        return await image.save()
     }
 
     static async deleteImageDoc(id, userId){
-        const image = await Image.findOne(id)
-        if(image.userId !== userId){
-            throw new Error("requesting user id must match the owner id")
+        try {
+            const image = await Image.findOne({_id: id})
+            if((typeof image.ownerId === 'object' || typeof image.ownerId === 'string') && image.ownerId != userId){
+                throw new Error("requesting user id must match the owner id")
+            }
+            return await Image.deleteOne({_id: id})
+        } catch(err){
+            const msg = this.#resolveAssetOperationErrorMessage(err)
+            console.error(msg)
+            throw err
         }
-        return await Image.deleteOne({_id: id})
+    }
+
+    static #resolveAssetOperationErrorMessage(err){
+        if(err.name === "ValidationError"){
+            return "Validation failed during doc operation"
+        } else {
+            return "Image asset document failed to save to db"
+        }
     }
 }
 

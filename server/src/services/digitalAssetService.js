@@ -15,6 +15,9 @@ class DigitalAssetService {
             imageDetails.fileKey = fileKey
             return await this.#assetStore.saveImageDoc(imageDetails)
         } catch(err) {
+            if(err.name === "ValidationError"){
+                console.error(`Invalid property value for property '${err.errors[Object.keys(err.errors)[0]].path}'`)
+            }
             console.error("Failed to create asset 'image'\n", err)
             throw err
         }
