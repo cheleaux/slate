@@ -1,5 +1,5 @@
 const digitalAssetStore = require('../graphicAssets/digitalAssetPersistence.js')
-
+const uuid = require('uuid')
 class DigitalAssetService {
     static #assetStore = digitalAssetStore
 
