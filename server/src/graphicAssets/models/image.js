@@ -10,7 +10,7 @@ const ImageSchema = mongoose.Schema({
         required: true
     },
     fileSize: {
-        type: number,
+        type: Number,
         required: true
     },
     fileKey: {
