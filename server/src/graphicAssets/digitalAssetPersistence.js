@@ -14,9 +14,13 @@ class DigitalAssetStore {
         }
     }
 
-    static async updateImageDoc(newImageDetails, id){
+    static async updateImageDoc(id, newImageDetails){
         try {
             const image = await Image.findOne({_id: id})
+            if((typeof image.ownerId === 'object' || typeof image.ownerId === 'string') && image.ownerId != userId){
+                throw new Error("requesting user id must match the owner id")
+            }
+            
             for(const key in newImageDetails){
                 if(!Object.hasOwn(image, key)){
                     throw new Error("Invalid Image property")
